@@ -60,7 +60,7 @@ describe('UrlRepository', () => {
             await repository.incrementClicks('1');
 
             expect(typeOrmRepository.increment).toHaveBeenCalledWith(
-                { id: '1', deletedAt: null },
+                { id: '1', deletedAt: IsNull() },
                 'clicks',
                 1,
             );
@@ -72,7 +72,7 @@ describe('UrlRepository', () => {
             await repository.incrementClicks('1');
 
             expect(typeOrmRepository.increment).toHaveBeenCalledWith(
-                { id: '1', deletedAt: null },
+                { id: '1', deletedAt: IsNull() },
                 'clicks',
                 1,
             );
