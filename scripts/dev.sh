@@ -1,26 +1,13 @@
-echo "Iniciando backend"
 
-# Iniciar PostgreSQL
-echo "🐳 Iniciando PostgreSQL..."
-docker-compose up -d db
 
-# Aguardar PostgreSQL estar pronto
-echo "⏳ Aguardando PostgreSQL estar pronto..."
-sleep 5
 
-# Instalar dependências se necessário
-if [ ! -d "node_modules" ]; then
-    echo "📦 Instalando dependências..."
-    npm install
-fi
+cp env.dev .env
+cp env.dev frontend/.env
 
-# Build e executar migrations
-echo "🔨 Fazendo build..."
-npm run build
 
-echo "🗄️ Executando migrations..."
-npm run migration:run
+docker compose -f docker-compose.dev.yml up -d
 
-# Iniciar backend
-echo "🚀 Iniciando backend em http://localhost:3000"
-npm run dev 
+echo "🚀 Aplicação rodando em modo desenvolvimento!"
+echo "📱 Frontend: http://localhost:8080"
+echo "🔧 Backend: http://localhost:3000"
+echo "📚 Swagger: http://localhost:3000/api" 
