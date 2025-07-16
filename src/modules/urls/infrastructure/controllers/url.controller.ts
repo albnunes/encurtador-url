@@ -202,28 +202,4 @@ export class UrlController {
 }
 
 
-@ApiTags('Redirect')
-@Controller()
-export class RedirectController {
-  constructor(
-    private readonly urlService: UrlService,
-    private readonly logger: AppLoggerService,
-  ) { }
 
-  @Get(':slug')
-  @ApiOperation({ summary: 'Redirect to original URL' })
-  @ApiResponse({ status: 302, description: 'Redirect to original URL' })
-  @ApiResponse({ status: 404, description: 'URL not found or expired' })
-  async redirectToOriginal(
-    @Param('slug') slug: string,
-    @Res() res: Response,
-  ): Promise<void> {
-    this.logger.log('URL redirect request', { slug });
-
-    const url = await this.urlService.findBySlug(slug);
-    await this.urlService.incrementClicks(url.id);
-
-
-    res.redirect(HttpStatus.FOUND, url.originalUrl);
-  }
-}

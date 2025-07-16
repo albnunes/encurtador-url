@@ -8,7 +8,8 @@ import { ConfigService } from '@nestjs/config';
 import { nanoid } from 'nanoid';
 import { IUrlRepository } from '../../domain/repositories/url.repository.interface';
 import { Url } from '../../domain/entities/url.entity';
-import { CreateUrlDto, UpdateUrlDto } from '../dtos/url.dto';
+import { User } from '../../../auth/domain/entities/user.entity';
+import { CreateUrlDto, UpdateUrlDto, UrlUserResponseDto } from '../dtos/url.dto';
 import { AppLoggerService } from '../../../../shared/infrastructure/logging';
 
 
@@ -84,11 +85,26 @@ export class UrlService {
       throw new NotFoundException('URL not found');
     }
 
+    // Transform user data to exclude password
+    if (url.user) {
+      url.user = this.transformUserData(url.user) as any;
+    }
+
     return url;
   }
 
   async findByUserId(userId: string, page = 1, limit = 10) {
-    return this.urlRepository.findByUserId(userId, page, limit);
+    const result = await this.urlRepository.findByUserId(userId, page, limit);
+
+    // Transform user data for each URL to exclude password
+    result.urls = result.urls.map(url => {
+      if (url.user) {
+        url.user = this.transformUserData(url.user) as any;
+      }
+      return url;
+    });
+
+    return result;
   }
 
   async findAll(page = 1, limit = 10) {
@@ -127,9 +143,13 @@ export class UrlService {
 
     const updatedUrl = await this.urlRepository.update(id, updateData);
 
-
     if (updateUrlDto.qrCode !== undefined) {
       await this.urlRepository.update(id, { qrCode: updateUrlDto.qrCode });
+    }
+
+    // Transform user data to exclude password
+    if (updatedUrl.user) {
+      updatedUrl.user = this.transformUserData(updatedUrl.user) as any;
     }
 
     return updatedUrl;
@@ -150,13 +170,25 @@ export class UrlService {
   }
 
   async incrementClicks(id: string): Promise<void> {
-    this.logger.debug('Incrementing URL clicks', { urlId: id });
+    this.logger.log('Incrementing URL clicks', { urlId: id });
     await this.urlRepository.incrementClicks(id);
   }
 
   async generateShortUrl(slug: string): Promise<string> {
     const baseUrl = this.configService.get('BASE_URL', 'http://localhost:3000');
     return `${baseUrl}/${slug}`;
+  }
+
+  private transformUserData(user: User): UrlUserResponseDto | undefined {
+    if (!user) return undefined;
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
   }
 
 

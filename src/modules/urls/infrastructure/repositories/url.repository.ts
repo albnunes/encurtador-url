@@ -76,7 +76,7 @@ export class UrlRepository implements IUrlRepository {
   }
 
   async incrementClicks(id: string): Promise<void> {
-    await this.repository.increment({ id, deletedAt: null }, 'clicks', 1);
+    await this.repository.increment({ id, deletedAt: IsNull() }, 'clicks', 1);
   }
 
   async findExpiredUrls(): Promise<Url[]> {

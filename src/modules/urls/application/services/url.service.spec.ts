@@ -241,4 +241,14 @@ describe('UrlService', () => {
       expect(result).toBe('http://localhost:3000/abc123');
     });
   });
+
+  describe('incrementClicks', () => {
+    it('should increment clicks successfully', async () => {
+      urlRepository.incrementClicks.mockResolvedValue(undefined);
+
+      await service.incrementClicks('1');
+
+      expect(urlRepository.incrementClicks).toHaveBeenCalledWith('1');
+    });
+  });
 });

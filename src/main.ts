@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { ClassSerializerInterceptor } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
 import { AppLoggerService } from './shared/infrastructure/logging';
@@ -18,13 +20,13 @@ async function bootstrap() {
     }),
   );
 
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get('Reflector')));
+
+  // Configurar cookie parser
+  app.use(cookieParser());
 
   app.enableCors({
-    origin: [
-      'http://localhost:8080',
-      'http://localhost:5173',
-      'http://localhost:3000',
-    ],
+    origin: "*",
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -49,8 +51,8 @@ async function bootstrap() {
     nodeVersion: process.version,
   });
 
-  console.log(`🚀 Application is running on: http://localhost:${port}`);
-  console.log(`📚 Swagger documentation: http://localhost:${port}/api`);
+  logger.log(`🚀 Application is running on: http://localhost:${port}`);
+  logger.log(`📚 Swagger documentation: http://localhost:${port}/api`);
 }
 
 bootstrap();

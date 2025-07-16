@@ -27,14 +27,27 @@ export class LoginDto {
   password: string;
 }
 
+export class UserResponseDto {
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty()
+  email: string;
+
+  @ApiProperty({ required: false })
+  name?: string;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
+}
+
 export class AuthResponseDto {
   @ApiProperty()
   accessToken: string;
 
-  @ApiProperty()
-  user: {
-    id: string;
-    email: string;
-    name?: string;
-  };
+  @ApiProperty({ type: UserResponseDto })
+  user: UserResponseDto;
 }

@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { IUserRepository } from '../../domain/repositories/user.repository.interface';
 import { User } from '../../domain/entities/user.entity';
-import { RegisterDto, LoginDto, AuthResponseDto } from '../dtos/auth.dto';
+import { RegisterDto, LoginDto, AuthResponseDto, UserResponseDto } from '../dtos/auth.dto';
 import { AppLoggerService } from '../../../../shared/infrastructure/logging';
 
 @Injectable()
@@ -53,6 +53,8 @@ export class AuthService {
         id: user.id,
         email: user.email,
         name: user.name,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       },
     };
   }
@@ -89,6 +91,8 @@ export class AuthService {
         id: user.id,
         email: user.email,
         name: user.name,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       },
     };
   }

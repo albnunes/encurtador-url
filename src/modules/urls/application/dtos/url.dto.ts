@@ -60,6 +60,23 @@ export class UpdateUrlDto {
   qrCode?: boolean;
 }
 
+export class UrlUserResponseDto {
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty()
+  email: string;
+
+  @ApiProperty({ required: false })
+  name?: string;
+
+  @ApiProperty()
+  createdAt: Date;
+
+  @ApiProperty()
+  updatedAt: Date;
+}
+
 export class UrlResponseDto {
   @ApiProperty()
   id: string;
@@ -96,6 +113,9 @@ export class UrlResponseDto {
     description: 'Whether QR code is enabled for this URL',
   })
   qrCode?: boolean;
+
+  @ApiProperty({ type: UrlUserResponseDto, required: false })
+  user?: UrlUserResponseDto;
 }
 
 export class UrlListResponseDto {
