@@ -114,7 +114,10 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(nanoid)/)"
+    ]
   },
   "lint-staged": {
     "*.{ts,js}": [
