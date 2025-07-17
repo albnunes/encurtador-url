@@ -37,10 +37,26 @@ services:
     image: nginx:alpine
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/letsencrypt
+      - ./ssl-logs:/var/log/letsencrypt
+      - ./webroot:/var/www/html
     depends_on:
       - backend
+    command: >
+      sh -c "nginx -g 'daemon off;'"
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./ssl:/etc/letsencrypt
+      - ./ssl-logs:/var/log/letsencrypt
+      - ./webroot:/var/www/html
+    command: certonly --webroot --webroot-path=/var/www/html --email bisneto.alberto@gmail.com --agree-tos --no-eff-email -d alberto-api.xyz -d www.alberto-api.xyz
+    depends_on:
+      - nginx
 
 volumes:
   pgdata: 

@@ -4,8 +4,6 @@
 
 Sistema completo de encurtamento de URLs desenvolvido com **Node.js/NestJS** e **Svelte**, seguindo arquitetura limpa e boas práticas. Permite encurtar URLs com ou sem autenticação, contabiliza acessos e oferece dashboard para gestão.
 
-
-
 ## Como Rodar
 
 ### Clonar o Projeto
@@ -24,16 +22,11 @@ git submodule update --init --recursive
 ### Docker (Recomendado)
 
 ```bash
-git clone --recursive https://github.com/albnunes/encurtador-url.git
-cd encurtador-url
-chmod +x scripts/setup-env.sh  
-docker-compose up --build
-```
-
-**Nota:** Se encontrar erro de permissão ao executar `npm run docker:build`, execute primeiro:
-
-```bash
 chmod +x scripts/setup-env.sh
+
+scripts/setup-env.sh
+
+docker-compose up --build -d
 ```
 
 **Acessos:**
@@ -42,38 +35,11 @@ chmod +x scripts/setup-env.sh
 - API: http://localhost:3000
 - Swagger: http://localhost:3000/api
 
-### Desenvolvimento Local
+### Links para acesso
 
-```bash
-# Backend
-npm install
-cp env.example .env
-npm run migration:run
-npm run dev
+- **API**: https://alberto-api.xyz
+- **Frontend**: https://encurtaador.vercel.app
 
-# Frontend (após clonar com submodules)
-cd frontend
-npm install
-cp env.example .env
-npm run dev
-```
-
-### Migrations
-
-Para gerenciar o banco de dados, use os comandos:
-
-```bash
-# Gerar migration baseada nas mudanças das entities
-npm run migration:generate -- src/database/migrations/NomeDaMigration
-
-# Executar migrations
-npm run migration:run
-
-# Ver status das migrations
-npm run migration:show
-
-# Reverter última migration
-npm run migration:revert
 
 
 ### Gerenciando Submodules
@@ -86,9 +52,7 @@ git submodule update --remote
 
 # OU atualizar apenas o frontend
 git submodule update --remote frontend
-```
-
-
+````
 
 ## Funcionalidades
 
@@ -126,29 +90,18 @@ git submodule update --remote frontend
 - **Domain-Driven Design**
 - **Repository Pattern**
 - **RESTful API** (Maturidade 2)
-- **Monorepo** com backend e frontend como submodules
-
-## Deploy
-
-Sistema pronto para deploy em cloud providers com Docker Compose. Inclui health checks, logs estruturados e configurações de segurança (CORS, rate limiting, JWT).
 
 ## Melhorias Futuras
 
 - Escalabilidade horizontal com microserviços
-- Cache com Redis
-- CDN para assets
-- Comunicação entre serviços via REST ou mensageria
 - Implementação de WebSockets para atualizações em tempo real
-- Sistema de notificações para usuários
 - Analytics avançados com métricas detalhadas
 
 ## 📋 Releases
 
 ### Histórico de Releases:
 
-- **v0.4.0** - Contabilização de acessos e analytics
+- **v0.4.0** - Contabilização de acessos
 - **v0.3.0** - Edição/remoção/listagem de URLs por usuário
 - **v0.2.0** - Sistema de autenticação
 - **v0.1.0** - Encurtador funcional básico
-
-Veja o [CHANGELOG.md](./CHANGELOG.md) para detalhes completos.

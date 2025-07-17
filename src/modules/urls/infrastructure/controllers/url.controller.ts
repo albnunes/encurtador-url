@@ -50,21 +50,33 @@ export class UrlController {
   })
   async createUrl(
     @Body() createUrlDto: CreateUrlDto,
-    @Headers('Authorization') token: string,
+    @Headers('Authorization') token?: string,
   ): Promise<UrlResponseDto> {
     this.logger.log('URL creation request received', {
       originalUrl: createUrlDto.originalUrl,
       expiresAt: createUrlDto.expiresAt,
+      hasToken: !!token,
     });
 
+    let userId: string | null = null;
 
-    const decodedToken = JwtDecoderUtil.decodeToken(token);
-    const userId = decodedToken.sub;
+    if (token) {
+      try {
+        const decodedToken = JwtDecoderUtil.decodeToken(token);
+        userId = decodedToken.sub;
 
-    this.logger.log('User authenticated for URL creation', {
-      userId,
-      userEmail: decodedToken.email,
-    });
+        this.logger.log('User authenticated for URL creation', {
+          userId,
+          userEmail: decodedToken.email,
+        });
+      } catch (error) {
+        this.logger.warn('Invalid token provided, creating URL without user', {
+          error: error.message,
+        });
+        userId = null;
+        this.logger.log('No token provided, creating URL without user');
+      }
+    } 
 
     const url = await this.urlService.createUrl(createUrlDto, userId);
     const shortUrl = await this.urlService.generateShortUrl(url.slug);
