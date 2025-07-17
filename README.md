@@ -26,8 +26,25 @@ chmod +x scripts/setup-env.sh
 
 scripts/setup-env.sh
 
-docker-compose up --build -d
+docker-compose -f docker-compose.dev.yml up --build -d 
 ```
+
+**Para usuários Windows:**
+
+Se estiver no Windows, copie os arquivos de ambiente manualmente:
+
+```bash
+# Na raiz do projeto
+copy env.dev .env
+
+# Na pasta frontend
+cd frontend
+
+copy env.example .env
+
+cd ..
+
+docker-compose -f docker-compose.dev.yml up --build -d 
 
 **Acessos:**
 
