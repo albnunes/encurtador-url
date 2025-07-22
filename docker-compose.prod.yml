@@ -6,7 +6,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "${DB_PORT:-5433}:5432"
+      - "${DB_PORT}:${DB_INTERNAL_PORT}"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -24,7 +24,7 @@ services:
       PORT: ${PORT}
       BASE_URL: ${BASE_URL}
     expose:
-      - "3000"
+      - ${PORT}
     depends_on:
       - db
     volumes:

@@ -22,7 +22,7 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get('Reflector')));
 
-  // Configurar cookie parser
+
   app.use(cookieParser());
 
   app.enableCors({
@@ -54,7 +54,7 @@ async function bootstrap() {
     logger.log(`🚀 Application is running on: http://localhost:${port}`);
     logger.log(`📚 Swagger documentation: http://localhost:${port}/api`);
   }
-  
+
 }
 
 bootstrap();
