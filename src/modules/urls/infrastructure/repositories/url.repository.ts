@@ -13,9 +13,7 @@ export class UrlRepository implements IUrlRepository {
 
   async create(url: Partial<Url>): Promise<Url> {
     const newUrl = this.repository.create(url);
-    if (newUrl.userId) {
-      return await this.repository.save(newUrl);
-    }
+    await this.repository.save(newUrl);
     return newUrl;
   }
 
